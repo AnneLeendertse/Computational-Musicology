@@ -1,0 +1,30 @@
+---
+title: "My Portfolio"
+author: "Anne Leendertse"
+date: "Spring 2023"
+output: html_document
+---
+
+This is normal text
+
+## This is a big heading
+
+### This is a smaller heading
+
+#### This is an even smaller heading
+
+I put italics between stars *like this*.
+I put bold between two stars **like this**.
+I make lists like this:
+
+  - list 1
+  - list 2
+  - list 3
+  
+  
+```{r}
+x <- 1
+print(x)
+```
+
+
