@@ -23,8 +23,13 @@ I make lists like this:
   
   
 ```{r}
-x <- 1
-print(x)
+library(tidyverse)
+library(spotifyr)
+```
+
+```{r}
+andy_shauf <- get_track_audio_features("15WJWyrI3c6aRuvbYgMcKv")
+my_portfolio <- get_playlist_audio_features("", "3MxAsxThsrUCjU4QAplkg0")
 ```
 
 
