@@ -2,7 +2,9 @@
 title: "My Portfolio"
 author: "Anne Leendertse"
 date: "Spring 2023"
-output: html_document
+output:
+  flexdashboard::flex_dashboard:
+    storyboard: true
 ---
 
 This is normal text
@@ -30,6 +32,18 @@ library(spotifyr)
 ```{r}
 andy_shauf <- get_track_audio_features("15WJWyrI3c6aRuvbYgMcKv")
 my_portfolio <- get_playlist_audio_features("", "3MxAsxThsrUCjU4QAplkg0")
+my_portfolio2 <- get_playlist_audio_features("", "0nYReIA8L6ep3yZp00TLwf")
 ```
 
+Row 
+-----------------------------------------------------------------------
 
+### Column 1
+```{r}
+ggplot(my_portfolio, aes(x = energy, y = instrumentalness)) + geom_point()
+```
+
+### Column 2
+```{r}
+ggplot(my_portfolio2, aes(x = energy, y = instrumentalness)) + geom_point()
+```
