@@ -35,15 +35,31 @@ compare_influence_writing <- rbind(my_portfolio_clean_mean, Home_num)
 compare_influence_writing <- t(compare_influence_writing )
 ```
 
-### This is the first tab
+### Introduction
 
-I put italics between stars *like this*. I put bold between two stars **like this**. I make lists like this:
-
--   list 1
--   list 2
--   list 3
+(I just changed my topic 2 days ago, so let me know what you think.)
 
 
+Just three days ago, the debut single, "Home", of my band was released on Spotify, marking a significant moment in my journey as a songwriter. It's the first time that the public can openly listen to my music, and I'm feeling a mix of excitement and nerves as I await the response from listeners.
+
+But the release of my song on Spotify also offers new possibilities beyond just reaching a wider audience. With the help of the Spotify API, I can analyze my song and gain insights into its musical characteristics.
+
+As a songwriter, I'm always fascinated by the creative process and how other music shapes the songs we write. For this project, I'm curious to explore the ways in which different artists and genres have influenced my own music.
+
+To do this, I plan to compare my debut song to my top songs of 2022 and identify any correlations or similarities. Which artists or songs have had the greatest impact on my writing, and have I unintentionally incorporated elements of other music into my work. In other words: have I maybe accidentally ripped someone off?
+
+As a songwriter, I believe that understanding the creative influences behind our music can enhance our artistry and lead to new discoveries. This project offers a unique opportunity to delve deeper into the musical elements that shape my writing and explore the ways in which other artists and genres have impacted my work. I'm excited to embark on this journey of self-discovery and to share my findings with fellow music enthusiasts.
+
+
+
+If you stumble upon this dashboard and you would like to see what the song, "Home", sounds like, here is the Spotify link:
+https://open.spotify.com/track/2YonDH4haZzgbo3NjpIalE?si=324e6a2d4e424358
+
+
+
+
+
+### Comparing numerical variables
 
 ```{r}
 compare_influence_writing
@@ -52,19 +68,9 @@ compare_influence_writing
 ***
 So as you can see I cleaned up the data. In the left column you can see that I got the mean of every single numerical variable of my most listend songs. In the right column you see all the numerical values given by Spotify to my song. I can't figure out what the best way is to compare these two. What graph should I use?
 
-### This is the second tab
+### Chromatogram
 
-```{r}
-
-```
-
-### This is the third tab
-
-#### testje0
-
-Oke nou wat tekst om ff te checken wtf er gebeurt
-
-#### testje1:
+#### The Chromatogram of my piece:
 
 ```{r}
 Home <-
@@ -89,3 +95,7 @@ Home |>
   theme_minimal() +
   scale_fill_viridis_c()
 ```
+
+***
+
+Insert text here
