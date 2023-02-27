@@ -13,7 +13,7 @@ library(spotifyr)
 library(plotly)
 library(compmus)
 library(tidyr)
-
+library(reshape2)
 ```
 
 ```{r}
@@ -22,17 +22,34 @@ my_portfolio <- get_playlist_audio_features("", "3MxAsxThsrUCjU4QAplkg0")
 my_portfolio2 <- get_playlist_audio_features("", "0nYReIA8L6ep3yZp00TLwf")
 Home <- get_track_audio_features("2YonDH4haZzgbo3NjpIalE")
 
-Home_num <- Home %>% select_if(is.numeric) %>% select(-time_signature, -key)
+Home_num <- Home %>% select_if(is.numeric) %>% select(-time_signature, -key, -tempo, -duration_ms, -loudness)
 andy_shauf_num <- andy_shauf %>% select_if(is.numeric)
 
 my_portfolio2_num <- my_portfolio2 %>% select_if(is.numeric)
-my_portfolio2_clean <- my_portfolio2_num %>% select(-track.disc_number, -track.disc_number, -track.popularity, -track.track_number, -track.album.total_tracks, -time_signature, -key)
+my_portfolio2_clean <- my_portfolio2_num %>% select(-track.disc_number, -track.disc_number, -track.popularity, -track.track_number, -track.album.total_tracks, -time_signature, -key, -tempo, -track.duration_ms, -loudness)
 
 my_portfolio_clean_mean <- apply(my_portfolio2_clean, 2, mean) 
 
 compare_influence_writing <- rbind(my_portfolio_clean_mean, Home_num)
 
 compare_influence_writing <- t(compare_influence_writing )
+
+
+colnames(compare_influence_writing)[2]  <- "My song" 
+colnames(compare_influence_writing)[1]  <- "Mean of influence
+songs" 
+
+jahe <- data.frame(compare_influence_writing)
+
+
+
+
+jahe.long <- melt(jahe)
+
+namen <- rownames(jahe)
+variables <- append(namen, rownames(jahe))
+
+
 ```
 
 ### Introduction
@@ -62,11 +79,13 @@ https://open.spotify.com/track/2YonDH4haZzgbo3NjpIalE?si=324e6a2d4e424358
 ### Comparing numerical variables
 
 ```{r}
-compare_influence_writing
+ggplot(jahe.long,aes(x=variables,value,fill=variable))+
+     geom_bar(stat="identity",position="dodge") + theme(axis.text.x = element_text(angle = 90))
 ```
 
 ***
-So as you can see I cleaned up the data. In the left column you can see that I got the mean of every single numerical variable of my most listend songs. In the right column you see all the numerical values given by Spotify to my song. I can't figure out what the best way is to compare these two. What graph should I use?
+
+In the bar graph in red you can see the mean for all the variables of my 101 top songs of 2022. These variables are the ones that are ranked between 0 and 1 by Spotify. In blue you see these numbers for my song. They differ the most for accounstichness. 
 
 ### Chromatogram
 
