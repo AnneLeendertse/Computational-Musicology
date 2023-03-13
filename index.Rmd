@@ -174,7 +174,7 @@ Home_keygram2 <-
 ```
 
 
-Overview {data-width=750}
+Overview {data-width=500}
 --------------------------------------------------
 
 ### Overview
@@ -195,7 +195,7 @@ This pattern happens twice in a verse. When looking at the chordogram, it doesn'
 
 
 
-column2 {data-width=250}
+column2 {data-width=500}
 --------------------------------------------------
 
 ### State of Unrest - Self-similarity Matrix (Chroma)
