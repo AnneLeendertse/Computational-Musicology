@@ -1,5 +1,5 @@
 ---
-title: "My Portfolio"
+title: "Inspiration on songwriting"
 author: "Anne Leendertse"
 date: "Spring 2023"
 output:
@@ -38,12 +38,17 @@ andy_shauf_num <- andy_shauf %>% select_if(is.numeric)
 my_portfolio2_num <- my_portfolio2 %>% select_if(is.numeric)
 my_portfolio2_clean <- my_portfolio2_num %>% select(-track.disc_number, -track.disc_number, -track.popularity, -track.track_number, -track.album.total_tracks, -time_signature, -key, -tempo, -track.duration_ms, -loudness)
 
-my_portfolio_key <- my_portfolio2 %>% select(key)
+my_portfolio_key <- my_portfolio2 %>% select(key, mode)
 
 my_portfolio_tempo <- my_portfolio2 %>% select(tempo, track.name)
+
+
+
 my_portfolio_clean_mean <- apply(my_portfolio2_clean, 2, mean) 
 compare_influence_writing <- rbind(my_portfolio_clean_mean, Home_num)
 compare_influence_writing <- t(compare_influence_writing )
+
+
 
 
 colnames(compare_influence_writing)[2]  <- "Home" 
@@ -80,7 +85,7 @@ To do this, I plan to compare my debut song to my top songs of 2022 and identify
 
 As a songwriter, I believe that understanding the creative influences behind our music can enhance our artistry and lead to new discoveries. This project offers a unique opportunity to delve deeper into the musical elements that shape my writing and explore the ways in which other artists and genres have impacted my work. 
 
-Before making a comparison, I want to analyze the songs that I listened to the most in 2022, with the aim of identifying any interesting trends or correlations. This section can be accessed by clicking the "Inspirations" button at the top of the page. Next, I will turn my attention to my own song, which can be found by clicking on the "My song" button. Finally, in the last section, I will seek to make comparisons and identify the song that Spotify suggests is most similar to my own.
+Before making a comparison, I want to analyze the songs that I listened to the most in 2022 with the aim of identifying any interesting trends or correlations. This section can be accessed by clicking the **"Inspiration feature analysis"** button at the top of the page. Next, I will turn my attention to my own song, which can be found by clicking on the **"Audio analysis of Home"** button. Finally, in the last section, I will seek to make comparisons and identify the song that Spotify suggests is most similar to my own. You can find this by clicking on **"Comparing inspiration and Home"**
 
 If you want to listen to what my song "Home" and the songs that could have influenced me sound like, look on the right side of this tab.
 
@@ -105,8 +110,7 @@ Inspiration feature analysis {.storyboard}
 
 ### Introduction
 
-hier wat zooi ook
-
+In this section, I will be doing a feature analysis on the songs I listened to the most in 2022. Analyzing your most listened-to songs can provide valuable insights into your music preferences and habits, potentially revealing interesting trends and correlations. For example, you may notice that you tend to listen to songs with a high bpm, or songs that Spotify categorizes as "sad". Overall, analyzing your most listened-to songs in 2022 can be very interesting. Looking into the songs that I those might give me some insight into why my music sounds the way that it does.
 
 
 ### Acousticness, Energy, Loudness and Mode
@@ -143,23 +147,33 @@ The size of the dots shows the loudness of the song. The louder the song, the bi
 The dots in the plot are color-coded to represent the mode of the song, which indicates whether it is in a major or minor key. While there does not appear to be a correlation between mode and the other variables, the plot does reveal that there are more songs in major key than in minor key in my corpus.
 
 
-### histogram keys
+### Distribution of keys
 ```{r}
 
 note_labels <- c("C", "C#", "D", "D#", "E", "F", "F#", "G", "G#", "A", "A#", "B")
 
-histogram1 <- ggplot(data = my_portfolio_key, aes(x = key)) + geom_histogram(binwidth = 1, fill = "indianred1", color = "indianred4", alpha = 1, ) + scale_x_continuous(breaks = 0:11, labels = note_labels) + labs(title = "Histogram Key", x = "Key", y = "Frequency") + theme_bw()
+histogram1 <- ggplot(data = my_portfolio_key, aes(x = key, text = mode)) + geom_histogram(binwidth = 1, fill = "indianred1", color = "indianred4", alpha = 1, ) + scale_x_continuous(breaks = 0:11, labels = note_labels) +
+  scale_fill_manual(values = c("green3", "indianred1"), 
+                    name = "Mode", 
+                    labels = c("Major", "Minor")) + labs(title = "Histogram Key", x = "Key", y = "Frequency") + theme_bw()
 
 
-ggplotly(histogram1)
+ggplotly(histogram1,  tooltip = c("key","text", "count"))
 ```
 
 
 ***
 
-Hier iets zeggen bro
+This histogram displays the distribution of the keys among the songs that I listened to the most in 2022. As expected, there is not really a certain key that I gravitate to the most. I don't have perfect pitch, so I wouldn't be able to know by just listening to a song what key it is in. What you can conclude, is that I lean more towards songs in major. 
 
-### histogram tempo
+However, some people state that the key of a song does in fact effect the way it feels. Take a look at this for example: https://takelessons.com/blog/how-music-affects-emotions#.
+
+Another thing that could effect this distribution, is what key musicians tend to gravitate towards. When using a normal tuning and standard chords on a guitar for example, maybe they write songs more frequently in Cmaj. 
+
+
+
+
+### Distribution of tempo
 
 ```{r}
 index_max_tempo <- which.max(my_portfolio_tempo$tempo)
@@ -178,10 +192,17 @@ ggplotly(histogram1)
 
 ***
 
-Hier nog wat gooien danmaar
+In this image, you can see a histogram that displays the different tempo's of the songs that I have listened to the most. This graph makes clear that I listen to music with a high variety of tempo. The bpm varies between 64 and 192. 
 
+ What's interesting is that 124 bpm seems to be my preferred tempo by a significant margin, which makes sense given that it falls within the most popular bpm range of 120 to 130 bpm according to research (http://hdl.handle.net/1854/LU-159578). However, there doesn't seem to be a clear preference for other tempos within this range.
+ 
+At first, I thought that there was probably no way that the two songs at both end of the range of tempos really were 64 and 192 bpm. This actually seemed to be the case. **"Even I can see"** is a very slow and beautiful song by **"Jeff Tweedy"**, front man of the band **"Wilco"**. And the fastest song, **"Mysterious river snake"** actually is very fast. It's also not in a standard meter, 3/4 or 6/8, depending how you listen to it. You can listen to the songs here:
 
-### Kmeans
+<iframe style="border-radius:12px" src="https://open.spotify.com/embed/track/2SRpWh6gc8stfB3hKuhyi6?utm_source=generator" width="50%" height="152" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
+
+<iframe style="border-radius:12px" src="https://open.spotify.com/embed/track/7m38lSSQsmMDcAhRPKbU2G?utm_source=generator" width="50%" height="152" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
+
+### Loudness and tempo, using Kmeans
 
 ```{r}
 # Assuming your data is stored in a data frame called "music_data"
@@ -198,13 +219,12 @@ my_portfolio2_kmeans <- my_portfolio2_kmeans %>%
 my_portfolio2_kmeans <- my_portfolio2_kmeans %>% select(tempo_rescaled, loudness_rescaled)
 
 
-
 # making sure the names of the artists appear
 flippedup <- my_portfolio2 %>% select(track.artists)
 names_list <- map(flippedup$track.artists, ~ .x$name)
 
 # making sure the names of the songs appear
-#dippedup < my_portfolio2 %>% select(track.name)
+dippedup <- my_portfolio2 %>% select(track.name, tempo, loudness)
 
 # Perform k-means clustering with k = 3 clusters
 kmeans_result <- kmeans(my_portfolio2_kmeans, centers = 3)
@@ -212,30 +232,35 @@ my_portfolio2_clusters <- data.frame(my_portfolio2_kmeans, cluster = kmeans_resu
 
 my_portfolio2_clusters$names <- names_list
 
+my_portfolio2_clusters <- cbind(my_portfolio2_clusters, dippedup)
 
 # Print the cluster assignments
-testjebro <- ggplot(my_portfolio2_clusters, aes(x = tempo_rescaled, y = loudness_rescaled, color = factor(cluster), text=names)) +
+testjebro <- ggplot(my_portfolio2_clusters, aes(x = tempo_rescaled, y = loudness_rescaled, color = factor(cluster), text=names, text2=track.name, text3 = tempo, text4 = loudness)) +
   geom_point(aes(shape = ifelse(names == "Loving", "triangle", "circle"))) +
   labs(x = "tempo", y = "Loudness", color = "Cluster") + theme_bw() + guides(shape=FALSE)
 
 
-ggplotly(testjebro, tooltip = c("text"))
+ggplotly(testjebro, tooltip = c("text", "text2", "text3", "text4"))
 
 ```
 
 ***
 
-jo gappie hier wat tekst
+In this scatter plot, I wanted to see if there was a relation between tempo and loudness in my most listened songs. I ended up using k-means to create three clusters different clusters based on these parameters. To do this, I scaled both parameters to between 0 and 1. When you hover over the dots, you can see the artist and track names. 
+
+The band that dominated my listening in 2022 is **"Loving"**, whose name surprisingly shares a similarity with my own band's name (although it was not intentional). Through this plot, I aimed to explore if their tracks were relatively consistent in tempo and loudness, or if they exhibited notable variability. Their tracks are distinguishable by the distinctive triangle shapes. Their songs actually seem to be quit varied, although there's still some ifs and buts. When you look at the song **"If I'm only my thoughts"** you can see that Spotify recognised their song as 189 bpm, but this is incorrect. I think it's actually half of it and that Spotify accidently marked the tempo octave as it's tempo. If you want to check the song out for yourself, this is it:
+
+<iframe style="border-radius:12px" src="https://open.spotify.com/embed/track/6N7nnLe36PK6vhvuOrk6JD?utm_source=generator" width="50%" height="152" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
 
 Audio analysis of "Home" {.storyboard}
 =====================================
 
 ### Introduction
 
-Hier een intro
+In this section, I will conduct an audio analysis of my original song, **"Home"**. The analysis will include a range of visualizations, including a chromagram, cepstogram, self-similarity matrices, chordogram, keygram, and tempogram. As the song's creator and producer, I have listened to it countless times throughout the recording and mixing process. This familiarity will allow me to interpret the audio analysis provided by Spotify with greater ease and potentially identify any errors or discrepancies. By examining how Spotify analyzes my track, I hope to gain a deeper understanding of its unique audio characteristics and identify any areas for improvement.
 
 
-### Chromagram
+### Chromagram of "Home"
 
 ```{r}
 Home_tidy <-
@@ -268,7 +293,7 @@ This is an image of the chromagram for my song "Home". A chromagram displays whi
 Overall it looks pretty clear to distinguish the different pitch classes that are present in the piece. Although I would say the entire piece is not in only one key, the **verses** are in Cminor. Hence the fact that the C pitch class is so clearly represented in this image. The first **chorus** starts around 50 seconds into the song, and there you can see the C is no longer prevalent in the song. In the outro of the song, starting around 120 seconds in, the song rests on the Cminor chord for a long time and that can be clearly extracted from this chromagram. 
 
 
-### Cepstogram
+### Cepstogram of "Home"
 
 ```{r}
 Home_Cepstogram <-
@@ -317,7 +342,7 @@ Here a cepstogram of my song can be seen. A cepstogram gives information about t
 
 
 
-### Self-similarity matrices
+### Self-similarity matrices of "Home"
 
 ```{r}
 Home_self_sim <-
@@ -389,7 +414,7 @@ So based on the looking at the right matrix, I think you can distinguish more th
 I believe that the reason for the difference between this matrix and the chroma-based one lies in the fact that the verses consist of two distinct parts. The verse is the same chord progression repeated 2 times, but the first in the first loop, there are no vocals, but rather a high pitched melody played on a synthesizer. The timbre is therefore very different between the two repetitions of the verse. 
 
 
-### Chordo- and keygram
+### Chordo- and keygram of "Home"
 ```{r}
 circshift <- function(v, n) {
   if (n == 0) v else c(tail(v, n), head(v, -n))
@@ -552,7 +577,7 @@ combined_plots <- Home_keygram |>
   plot_layout(ncol = 2, widths = c(5,5)) +
   Home_keygram2 |>
   compmus_match_pitch_template(
-    chord_templates,
+    key_templates,
     method = "euclidean",
     norm = "manhattan"
   ) |>
@@ -571,22 +596,34 @@ combined_plots
 
 ***
 
-ff checke hoe dit eruit ziet dan he?
+In this tab, you can see a chordogram (left) and a keygram (right) of my piece. The chordogram can show you what chord is being played at a given time and the keygram expresses per section what key it's in. 
+
+##### **Chordogram**
+
+I tried dividing the chordogram in beats, because the chords in my song change every two beats. To me, it looks like there's a bit of a struggle making these chordograms for this particular song. The song verse of the song makes use of the following chords: -->
+
+**Gmaj** - **Cmin** - **Abmaj** - **C#min** - **Cmin** - **Abmaj** - **Cmin** - **Cmin**
+
+This pattern happens twice in a verse. When looking at the chordogram, it doesn't fully seem to pick up on these chords. However, it gets really close and sometimes it indeed get's it right. **C#min** for example, get's recogised every single time it occurs in the song. This is really interesting to me.
+
+##### **Keygram**
+
+The keygram appears to outperform the chordogram, accurately identifying that the bulk of the song is in Cmin. Additionally, the keygram identifies the chorus section (around 50 seconds) as being in Ebmaj, which is consistent with my own perception of the song.
 
 
-### Tempogram
+### Tempogram of "Home"
 
 
 ```{r}
-# Home_tempo <- get_tidy_audio_analysis("2YonDH4haZzgbo3NjpIalE")
-# 
-# Home_tempo |>
-#   tempogram(window_size = 8, hop_size = 1, cyclic = TRUE) |>
-#   ggplot(aes(x = time, y = bpm, fill = power)) +
-#   geom_raster() +
-#   scale_fill_viridis_c(guide = "none") +
-#   labs(x = "Time (s)", y = "Tempo (BPM)") +
-#   theme_classic()
+Home_tempo <- get_tidy_audio_analysis("2YonDH4haZzgbo3NjpIalE")
+
+Home_tempo |>
+  tempogram(window_size = 8, hop_size = 1, cyclic = TRUE) |>
+  ggplot(aes(x = time, y = bpm, fill = power)) +
+  geom_raster() +
+  scale_fill_viridis_c(guide = "none") +
+  labs(x = "Time (s)", y = "Tempo (BPM)") +
+  theme_classic()
 
 ```
 
@@ -598,7 +635,7 @@ A tempogram is an image that shows what tempo the song is at a given time. This 
 Comparing inspiration and "Home" {.storyboard}
 =====================================
 
-### Spotify Audio features
+### Comparing spotify Audio features
 
 
 ```{r}
@@ -610,9 +647,25 @@ ggplotly(ding, tooltip = c("text", "value"))
 
 ***
 
-In the bar graph in red you can see the mean for all the variables of my 101 top songs of 2022. These variables are the ones that are ranked between 0 and 1 by Spotify. In blue you see these numbers for my song. They differ the most for acounsticness. 
+The bar graph compares the mean values of parameters for my 101 top songs of 2022, represented by red bars, with those of my own song shown in blue. These parameters are ranked between 0 and 1 by Spotify.
 
-### Timbre features 
+##### acousticness
+Although I feel like I listen to a lot of acoustic music, It doesn't appear that Spotify things the same. My own song makes use of acoustic guitar, but is still really rated as being very much not acoustic. I think this makes sense, because it's very hard for Spotify to recognise the timbre of an acoustic guitar. This parameter probably looks more at the presence of a drum beat. 
+
+##### danceability and energy
+The mean of my top listened songs in 2022 and my own are for these parameters very close. For danceability they are both around 0.6 and for energy both around 0.5. 
+
+##### instrumentalness and speechiness
+From this histogram, it seems that I like to listen to songs with a lot of vocal in it. My own song actually seems to be a lot more instrumental. This is in fact true, there is only vocals in short parts of the songs. There is also no normal speech at all in my song, hence the low score in this parameter.
+
+##### liveness
+The average score for liveness for the songs that I have listened to is actually pretty straight in the middle, while my own song scores rather low.
+
+##### valence
+I seem to be listening to songs that on average lean more to happy, but my own song is ranked as more "sad". 
+
+
+### Comparing timbre features 
 
 ```{r}
 MeestBeluisterd2022 <-
@@ -685,17 +738,26 @@ ggplotly(dingetjedongetje, tooltip = c("value"))
 
 ***
 
-Hier wat over lullen
+This plot displays the distribution of the first six timbre coefficients extracted by Spotify, depicted as orange violins. Each violin has a purple dot on top, which indicates my song's score for that specific timbre coefficient. I can still understand what the first three coefficients say about the music, so I will look into those three. 
+
+##### c01
+This timbre coefficient represents loudness. My most listened songs aren't very spread in loudness, and my song seems to be very much in the middle.
+
+##### c02
+This layer is more associated with the lower frequencies; the bass. The songs that I have listened to seem to be very spread when it comes to the bass, but in my song the lower frequencies are very present.
+
+##### c03
+In this timbre coefficient you can see the mids. My song scores pretty low compared to my most listened songs. 
 
 
 
-### Scatter plot
+### Comparing Acousticness, Energy, Loudness and Mode
 
 ```{r}
 
 Home_for_scatterplot <-  get_playlist_audio_features("", "2OKDjAF0WFX2OntThq1N6f")
 Home_for_scatterplot$mode <- factor(Home_for_scatterplot$mode)
-levels(Home_for_scatterplot$mode) <- c("minor", "major")
+levels(Home_for_scatterplot$mode) <- c("major", "minor")
 
 my_portfolio3 <- rbind(my_portfolio2, Home_for_scatterplot)
 
@@ -711,7 +773,7 @@ first_scatter2 <- ggplot(my_portfolio3, aes(x=energy, y=acousticness, size=loudn
   
   # Customize colors and theme
   scale_color_brewer(palette = "Set1") +
-  theme_bw() + guides(size = guide_legend(title=NULL), shape = guide_legend(title=NULL)) + annotate("text", x = 0.40, y = 0.02, label = "Home", color = "red", size=3)
+  theme_bw() + guides(size = guide_legend(title=NULL), shape = guide_legend(title=NULL)) + annotate("text", x = 0.40, y = 0.02, label = "Home", color = "skyblue4", size=3)
 
 
 # Convert the scatterplot to a plotly object and display
@@ -721,10 +783,10 @@ ggplotly(first_scatter2, tooltip = c("text"), hoverinfo = "text")
 
 ***
 
-hier nog tekst
+I was wondering where my own song would be at the scatter plot I made to show the relation between acoutsicness, energy, mode and loudness. For almost all of these, my song is very close to the song **"Twinkle"** by artist **"Heather"**. My song seems to score quite high on energy, while scoring very low at acoustic. This is very interesting to me. 
 
 
-### Kmeans
+### Comparing loudness and tempo, using Kmeans
 
 ```{r}
 
@@ -757,7 +819,7 @@ my_portfolio3_clusters$names <- names_list
 
 
 # Print the cluster assignments
-testjebro <- ggplot(my_portfolio3_clusters, aes(x = tempo_rescaled, y = loudness_rescaled, color = factor(cluster), text=names)) +
+testjebro <- ggplot(my_portfolio3_clusters, aes(x = tempo_rescaled, y = loudness_rescaled, color = factor(cluster), text=names, size = 2)) +
   geom_point(aes(shape = ifelse(names == "Loving", "triangle", "circle"), size = ifelse(names == "Moving", 1.01, 1))) +
   labs(x = "tempo", y = "Loudness", color = "Cluster") + theme_bw() + guides(shape=FALSE, size=FALSE)
 
@@ -768,10 +830,10 @@ ggplotly(testjebro, tooltip = c("text"))
 
 ***
 
-hier ook nog wat
+I was also interested where my own song would be at the scatter plot I made to show the relation between loudness and tempo. My song is the big dot in this plot. It's been assigned to the blue cluster and it's very close to songs by **"Hether"**, **"Andy Shauf"**, and **"Moonchild"** while looking at these two parameters. 
 
 
-### Welke pokkoe het meeste?
+### What song is most similar?
 
 ```{r}
 Home_song <- get_track_audio_features("2YonDH4haZzgbo3NjpIalE")
@@ -850,18 +912,19 @@ After all these steps I found that the song "Come on lets go" by "Broadcast" was
 Conclusion
 =====================================
 
-Conclusion {data-width=500}
+Conclusion {data-width=1000}
 --------------------------------------------------
 
 ### Conclusion
 
-Hiier wat zooi brodda
+The goal of this portfolio was to see if my song is similar to the songs I have listened to the most in 2022, according to Spotify's audio features. 
 
+Initially I took a look at those songs that could have been an inspiration to me. I found a few different things. First a trend between the acousticness and the energy of the songs and that I seemed to prefer songs that are in a major key. After that I discoverd that I didn't really have a preference for tempo, although the bpm that I listened to the most was 124. I also looked at the relationship between loudness and tempo. 
 
-Conclusion2 {data-width=500}
---------------------------------------------------
+After that I looked into my own song. I compared the chromagram, cepstogram, self-similarity matrices, chordogram, keygram, and tempogram that I made of my song with my own knowledge of "Home". In many cases they were quite accurate. 
 
-### Photo of something
+After comparing the songs in my corpus to my own song, I discovered that some of the audio features rated by Spotify between 0 and 1 were very similar to the average of my corpus, such as danceability and energy. However, others were quite different, such as acousticness. In terms of timbre coefficients, my song seemed to contain more bass than most of the songs in my corpus. Lastly, I found that the song that was closest to my own song in all numeric parameters was "Come on lets go" by "Broadcast". If there's a song that I ripped off the most, it's probably that one.
+
 
 
 <!-- New tab (1) -->
